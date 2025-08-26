@@ -1,0 +1,90 @@
+{
+      "id": 64411,
+      "name": "Release-2",
+      "status": "active",
+      "createdOn": "2025-08-26T19:40:35.67Z",
+      "modifiedOn": "2025-08-26T20:15:46.41Z",
+      "modifiedBy": {
+        "displayName": "Softtek Pablo Gustavo Gomez Interian",
+        "url": "https://spsprodcus2.vssps.visualstudio.com/A5b6effae-88d4-44b8-8c78-db2e6ae4139c/_apis/Identities/218df2d8-7056-64c2-a331-b7d118cf6732",
+        "_links": {
+          "avatar": {
+            "href": "https://dev.azure.com/Coppel-Retail/_apis/GraphProfile/MemberAvatars/aad.MjE4ZGYyZDgtNzA1Ni03NGMyLWEzMzEtYjdkMTE4Y2Y2NzMy"
+          }
+        },
+        "id": "218df2d8-7056-64c2-a331-b7d118cf6732",
+        "uniqueName": "nem.pabloi@coppel.com",
+        "imageUrl": "https://dev.azure.com/Coppel-Retail/_apis/GraphProfile/MemberAvatars/aad.MjE4ZGYyZDgtNzA1Ni03NGMyLWEzMzEtYjdkMTE4Y2Y2NzMy",
+        "descriptor": "aad.MjE4ZGYyZDgtNzA1Ni03NGMyLWEzMzEtYjdkMTE4Y2Y2NzMy"
+      },
+      "createdBy": {
+        "displayName": "Softtek Pablo Gustavo Gomez Interian",
+        "url": "https://spsprodcus2.vssps.visualstudio.com/A5b6effae-88d4-44b8-8c78-db2e6ae4139c/_apis/Identities/218df2d8-7056-64c2-a331-b7d118cf6732",
+        "_links": {
+          "avatar": {
+            "href": "https://dev.azure.com/Coppel-Retail/_apis/GraphProfile/MemberAvatars/aad.MjE4ZGYyZDgtNzA1Ni03NGMyLWEzMzEtYjdkMTE4Y2Y2NzMy"
+          }
+        },
+        "id": "218df2d8-7056-64c2-a331-b7d118cf6732",
+        "uniqueName": "nem.pabloi@coppel.com",
+        "imageUrl": "https://dev.azure.com/Coppel-Retail/_apis/GraphProfile/MemberAvatars/aad.MjE4ZGYyZDgtNzA1Ni03NGMyLWEzMzEtYjdkMTE4Y2Y2NzMy",
+        "descriptor": "aad.MjE4ZGYyZDgtNzA1Ni03NGMyLWEzMzEtYjdkMTE4Y2Y2NzMy"
+      },
+      "createdFor": {
+        "displayName": "Softtek Pablo Gustavo Gomez Interian",
+        "url": "https://spsprodcus2.vssps.visualstudio.com/A5b6effae-88d4-44b8-8c78-db2e6ae4139c/_apis/Identities/218df2d8-7056-64c2-a331-b7d118cf6732",
+        "_links": {
+          "avatar": {
+            "href": "https://dev.azure.com/Coppel-Retail/_apis/GraphProfile/MemberAvatars/aad.MjE4ZGYyZDgtNzA1Ni03NGMyLWEzMzEtYjdkMTE4Y2Y2NzMy"
+          }
+        },
+        "id": "218df2d8-7056-64c2-a331-b7d118cf6732",
+        "uniqueName": "nem.pabloi@coppel.com",
+        "imageUrl": "https://dev.azure.com/Coppel-Retail/_apis/GraphProfile/MemberAvatars/aad.MjE4ZGYyZDgtNzA1Ni03NGMyLWEzMzEtYjdkMTE4Y2Y2NzMy",
+        "descriptor": "aad.MjE4ZGYyZDgtNzA1Ni03NGMyLWEzMzEtYjdkMTE4Y2Y2NzMy"
+      },
+      "variables": {
+
+      },
+      "variableGroups": [],
+      "releaseDefinition": {
+        "id": 7349,
+        "name": "api-cliente-ventaespera-springboot-cd-gke-team29",
+        "path": "\\NPV\\GCP\\PARTICULARES\\Team 29",
+        "projectReference": null,
+        "url": "https://vsrm.dev.azure.com/Coppel-Retail/aeb33777-9626-47d5-a788-d24dfd732f42/_apis/Release/definitions/7349",
+        "_links": {
+          "self": {
+            "href": "https://vsrm.dev.azure.com/Coppel-Retail/aeb33777-9626-47d5-a788-d24dfd732f42/_apis/Release/definitions/7349"
+          },
+          "web": {
+            "href": "https://dev.azure.com/Coppel-Retail/aeb33777-9626-47d5-a788-d24dfd732f42/_release?definitionId=7349"
+          }
+        }
+      },
+      "releaseDefinitionRevision": 2,
+      "description": "",
+      "reason": "manual",
+      "releaseNameFormat": "Release-$(rev:r)",
+      "keepForever": false,
+      "definitionSnapshotRevision": 3,
+      "logsContainerUrl": "https://vsrm.dev.azure.com/Coppel-Retail/aeb33777-9626-47d5-a788-d24dfd732f42/_apis/Release/releases/64411/logs",
+      "url": "https://vsrm.dev.azure.com/Coppel-Retail/aeb33777-9626-47d5-a788-d24dfd732f42/_apis/Release/releases/64411",
+      "_links": {
+        "self": {
+          "href": "https://vsrm.dev.azure.com/Coppel-Retail/aeb33777-9626-47d5-a788-d24dfd732f42/_apis/Release/releases/64411"
+        },
+        "web": {
+          "href": "https://dev.azure.com/Coppel-Retail/aeb33777-9626-47d5-a788-d24dfd732f42/_release?releaseId=64411&_a=release-summary"
+        }
+      },
+      "tags": [],
+      "triggeringArtifactAlias": null,
+      "projectReference": {
+        "id": "aeb33777-9626-47d5-a788-d24dfd732f42",
+        "name": "TiendaRyM.NPV"
+      },
+      "properties": {
+
+      }
+    }
