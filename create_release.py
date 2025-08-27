@@ -6,6 +6,7 @@ import argparse
 
 import get_pipelines as pipes
 import get_releases as releases
+import get_commit as commits
 
 ORGANIZATION = config('ORGANIZATION')
 PROJECTS = [p.strip() for p in config('PROJECTS').split(',')]
@@ -39,8 +40,15 @@ def makePayload(def_id):
 
         elif i['type'].lower() == "git":
 
-            source['id'] = "LATEST"
-            source["name"] = "LATEST"
+            repos = commits.get_allRepositories()
+            repos = commits.sel_cutom_data("api-tienda-cajas","name",0,repos)
+            branches = commits.get_allBranches(repos[0]["id"])
+            branches = commits.sel_cutom_data("master","name",0,branches)
+            commit = commits.get_allCommits(repos[0]["id"],branches[0]["name"])
+
+            if commit:
+                source['id'] = commit[0]['commitId']
+                source["name"] = branches[0]["name"]
 
 
         artifact = {
@@ -75,5 +83,5 @@ if __name__ == "__main__":
 
     definitions = releases.get_allDefinitions()
     definitions = releases.sel_cutom_data(name,"name",0,definitions)
-
+    
     createRelease( makePayload(definitions[0]['id']) ) 

@@ -52,7 +52,8 @@ def getArtifacts(art_id):
 
     if definition:
         for artifact in definition["artifacts"]:
-            #print(artifact,"\n\n\n")
+            with open("example.json","a") as file:
+                file.write(str( artifact) + "\n" )
             alias = artifact.get("alias")
             art_type = artifact.get("type")
             ref = artifact.get("definitionReference",{})
