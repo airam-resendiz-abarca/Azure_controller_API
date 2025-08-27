@@ -28,3 +28,45 @@ def getData(path,vsrm:bool = False):
     else:
         print("Error" , response.status_code, response.text)
         return None
+    
+def makefile(data):
+    
+    with open("example.json","w",errors="replace") as file:
+        for i in data:
+            text = str(i).replace("'",'"') + "\n\n" 
+            
+            file.write(text )
+
+def sel_custom_data(filter: str = "",area: str = "path", type: int = 0, data = []  ):
+
+    filtered = []
+    deep = area.split("/")
+
+    for release in data:
+        value = ""
+        holder = release.copy()
+        for i in deep:
+            holder = holder[i]
+
+        value = holder
+        if type == 0:
+
+            if filter in value:
+                filtered.append(release)
+
+        elif type == 1:
+        
+            if value.startswith(filter):
+                filtered.append(release)
+
+        elif type == 2:
+        
+            if value.endswith(filter):
+                filtered.append(release)
+
+        elif type == 3:
+        
+            if value == filter:
+                filtered.append(release)
+
+    return filtered

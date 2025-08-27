@@ -16,69 +16,29 @@ def get_allPipes():
 def get_allPipeswDef(id):
     rel_path = f"build/builds?definitions={id}&api-version={API_VERSION}"
     return pet.getData(rel_path)
+
+def getPipeline(name: str,build:str = ""):
+    data = get_allDefinitions()
+    data = pet.sel_custom_data(name,"name",0,data)
+    pipes = get_allPipeswDef(data[0]["id"])
+    if build != "":
+        pipes = pet.sel_custom_data(build,"buildNumber",0,pipes)
+
+    pet.makefile(pipes)
+
+    return pipes
     
-def sel_cutom_data(filter: str = "",area: str = "path", type: int = 0, data = []  ):
-
-    filtered = []
-    deep = area.split("/")
-    if type == 0:
-        
-        for release in data:
-            
-            value = ""
-            holder = release.copy()
-            for i in deep:
-                holder = holder[i]
-
-            value = holder
-            if filter in value:
-                filtered.append(release)
-
-    elif type == 1:
-        
-        for release in data:
-            value = ""
-            holder = release.copy()
-            for i in deep:
-                holder = holder[i]
-
-            value = holder
-            if value.startswith(filter):
-                filtered.append(release)
-
-    elif type == 2:
-        
-        for release in data:
-            value = ""
-            holder = release.copy()
-            for i in deep:
-                holder = holder[i]
-
-            value = holder
-            if value.endswith(filter):
-                filtered.append(release)
-
-    return filtered
     
-def printPath(data):
-
-    for release in data:
-        print(f"ID: {release['id']}\t-  Path: {release['path']} \\ {release['name']} ")
-
-def printPipes(data):
-
-    for release in data:
-        print(f"ID: {release['id']}\t- -Name: {release['buildNumber']}\t\t-Source: {release["definition"]["name"]} ")
-
 if __name__ == "__main__":
 
-    data = get_allDefinitions()
-    pipes = get_allPipes()
-    newData = sel_cutom_data("api-credito-springboot-npv-qa-gcp-ci","definition/name",0,pipes)
+    getPipeline("api-tienda-cajas-npv-dev-gcp-ci")
+    #data = pet.sel_custom_data()
+    #pipes = get_allPipeswDef()
+    #newData = pet.sel_custom_data("api-credito-springboot-npv-qa-gcp-ci","definition/name",0,pipes)
+
 
     
     
-    printPipes(pipes)
 
 
     

@@ -23,29 +23,6 @@ def get_Definition(def_id):
     url_art = f"release/definitions/{def_id}?api-version={API_VERSION}"
     return pet.getData(url_art,True)
 
-def sel_cutom_data(filter: str = "",area: str = "path", type: int = 0, data = []  ):
-
-    filtered = []
-    if type == 0:
-        
-        for release in data:
-            if filter in release[area]:
-                filtered.append(release)
-
-    elif type == 1:
-        
-        for release in data:
-            if release[area].startswith(filter):
-                filtered.append(release)
-
-    elif type == 2:
-        
-        for release in data:
-            if release[area].endswith(filter):
-                filtered.append(release)
-
-    return filtered
-
 def getArtifacts(art_id):
     definition = get_Definition(art_id)
     artifacts = []
@@ -71,38 +48,30 @@ def getArtifacts(art_id):
 
     return artifacts
 
-def printDefinition(data):
-    for release in data:
-        print(f"ID: {release['id']}\t-  Path: {release['path']} \\ {release['name']} ")
+def getReleases(api:str,path:str,release: str = ""):
+    data = get_allDefinitions()
+    data = pet.sel_custom_data(api,"name",0,data)
+    data = pet.sel_custom_data(path,"path",0,data)
 
+    releases = get_allReleaseswDef(data[0]["id"])
 
-def printReleases(data):
-    for release in data:
-        print(f"ID: {release['id']}\t-Name: {release['releaseDefinition']['name']} \\ {release['name']} ")
+    if release != "":
+        releases = pet.sel_custom_data(release,"name",3,releases)
     
-def printData(data):
+    pet.makefile(releases)
 
-    for release in data:
-        artifacts = getArtifacts(release["id"])
-        print(f"ID: {release['id']}\t-  Path: {release['path']} \\ {release['name']} --NumArtif = {len(artifacts)}")
-        for i in artifacts:
-            print( '-'*10, f"\n-Alias: {i["alias"]}\n-Type: {i["type"]}\nSource: {i["source"]}")
-        print('-'*10)
+
 
 if __name__ == "__main__":
 
+    #getReleases("api-cancelaciones","NPV\\GCP\\PARTICULARES\\Team 18","Release-1")
     data = get_allDefinitions()
-    newData = sel_cutom_data("Team 29","path",0,data)
-    newData2 = sel_cutom_data("NPV\\GCP\\PARTICULARES","path",0,newData)
-    newData3 = sel_cutom_data("api-tienda-cajas","name",0,newData2)
+    data = pet.sel_custom_data("api-cancelaciones","name",0,data)
+    data = pet.sel_custom_data("GCP\\PARTICULARES\\Team 18","path",0,data)
 
-    printDefinition(newData3)
+    definition = get_Definition(data[0]["id"])
+    pet.makefile([definition])
 
-    releases = get_allReleaseswDef( newData3[0]["id"] )
-
-    #printReleases(releases)
-
-    printData(newData3)
 
 
 

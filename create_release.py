@@ -7,6 +7,7 @@ import argparse
 import get_pipelines as pipes
 import get_releases as releases
 import get_commit as commits
+import peticiones as pet
 
 ORGANIZATION = config('ORGANIZATION')
 PROJECTS = [p.strip() for p in config('PROJECTS').split(',')]
@@ -20,39 +21,33 @@ auth = HTTPBasicAuth("",PAT)
 
 
 
-def makePayload(def_id):
+def makePayload(def_id,lista):
 
-    def_artifacts = releases.getArtifacts(def_id)
+    def_art = releases.getArtifacts(def_id)
     artifacts = []
-
-    for i in def_artifacts:
+    for i in range(len(def_art)):
 
         source = {}
-
-        if i['type'].lower() == "build":
-            pipelines = pipes.get_allPipeswDef(i["def_id"])
-            buildNum = input("Ingrese el buildNumber: ")
-            pipeline = pipes.sel_cutom_data(str(buildNum),"buildNumber",0,pipelines)
-
+        
+        if def_art[i]['type'].lower() == "build":
+            
+            pipeline = pipes.getPipeline(def_art[i]["source"],lista[i])
+            
             if pipeline:
                 source['id'] = pipeline[0]['id']
-                source["name"] = i['source']
+                source["name"] = def_art[i]['source']
 
-        elif i['type'].lower() == "git":
+        elif def_art[i]['type'].lower() == "git":
 
-            repos = commits.get_allRepositories()
-            repos = commits.sel_cutom_data("api-tienda-cajas","name",0,repos)
-            branches = commits.get_allBranches(repos[0]["id"])
-            branches = commits.sel_cutom_data("master","name",0,branches)
-            commit = commits.get_allCommits(repos[0]["id"],branches[0]["name"])
-
+            commit = commits.getCommit(def_art[i]["source"],"master",lista[i])
+            
             if commit:
                 source['id'] = commit[0]['commitId']
-                source["name"] = branches[0]["name"]
+                source["name"] = "master"
 
 
         artifact = {
-            "alias": str( i['alias'] ),
+            "alias": str( def_art[i]['alias'] ),
             "InstanceReference": source
         }
 
@@ -79,9 +74,15 @@ def createRelease(payload):
 
 if __name__ == "__main__":
 
-    name = "api-tienda-cajas-springboot-cd-gke-team29"
+    with open("releases.list","r") as file:
+        for line in file:
+            params = line.split("|")
+            artifacts = params[2:]
 
-    definitions = releases.get_allDefinitions()
-    definitions = releases.sel_cutom_data(name,"name",0,definitions)
-    
-    createRelease( makePayload(definitions[0]['id']) ) 
+            definitions = releases.get_allDefinitions()
+            definitions = pet.sel_custom_data(params[0],"name",0,definitions)
+            definitions = pet.sel_custom_data(params[1],"path",0,definitions)
+            
+            payload = makePayload(definitions[0]['id'],artifacts)
+
+            pet.makefile([payload])
