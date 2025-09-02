@@ -1,2 +1,0 @@
-{"definitionId": 7524, "description": "release creado con python", "artifacts": [{"alias": "_api-cancelaciones", "InstanceReference": {"id": "530c9a8640e7fa4927fcbd78653122378a4da1d2", "name": "master"}}, {"alias": "_api-cancelaciones-springboot-npv-dev-gcp-ci", "InstanceReference": {"id": 930908, "name": "api-cancelaciones-springboot-npv-dev-gcp-ci"}}, {"alias": "_api-cancelaciones-springboot-npv-qa-gcp-ci", "InstanceReference": {"id": 919259, "name": "api-cancelaciones-springboot-npv-qa-gcp-ci"}}]}
-
