@@ -23,12 +23,44 @@ auth = HTTPBasicAuth("",PAT)
 isbuild = lambda v: re.fullmatch(r"\d+(\.\d+)*",v)
 iscommit = lambda v: re.fullmatch(r"[0-9a-f]{5,40}",v,re.I)
 
+new_Artifact = lambda artif,source: {
+            "alias": str( artif['alias'] ),
+            "InstanceReference": source
+        }
+
+new_Definition = lambda def_id,art_list: {
+        "definitionId": int(def_id),
+        "description": f"release creado con python",
+        "artifacts": art_list
+
+    }
+
+def getPipeline(i: dict, buildNumber: list) -> list:
+    
+    pipeline = []
+    for j in buildNumber:
+        pipeline = pipes.getPipeline(i["source"],j)
+        if pipeline:
+            break
+    if not pipeline:
+            pipeline = pipes.getPipeline(i["source"])
+
+    return [ b for b in pipeline if b["result"] == "succeeded"]
+
+def getCommit(i: dict,commitsid: list):
+    commit = []
+    for j in commitsid:
+        commit = commits.getCommit(i["source"],"master",j)
+        if commit:
+            break
+    if not commit:
+            commit = commits.getCommit(i["source"],"master")
+    return commit
 
 def makePayload(def_id,lista):
 
     def_art = releases.getArtifacts(def_id)
     artifacts = []
-
     buildnums = [p for p in lista if isbuild(p)]
     commitsid = [p for p in lista if iscommit(p)]
 
@@ -37,50 +69,21 @@ def makePayload(def_id,lista):
         source = {}
         
         if i['type'].lower() == "build":
-            pipeline = []
-            for j in buildnums:
-                pipeline = pipes.getPipeline(i["source"],j)
-                if pipeline:
-                    break
-            if not pipeline:
-                    pipeline = pipes.getPipeline(i["source"])
-
-            pipeline = [ b for b in pipeline if b["result"] == "succeeded"]
-
+            
+            pipeline = getPipeline(i,buildnums)
             if pipeline:
                 source['id'] = pipeline[0]['id']
                 source["name"] = i['source']
-            
 
         elif i['type'].lower() == "git":
 
-            commit = []
-            for j in commitsid:
-                commit = commits.getCommit(i["source"],"master",j)
-                if commit:
-                    break
-            if not commit:
-                    commit = commits.getCommit(i["source"],"master")
-            
+            commit = getCommit(i,commitsid)
             if commit:
                 source['id'] = commit[0]['commitId']
                 source["name"] = "master"
 
-
-        artifact = {
-            "alias": str( i['alias'] ),
-            "InstanceReference": source
-        }
-
-        artifacts.append(artifact)
-    
-
-    return {
-        "definitionId": int(def_id),
-        "description": f"release creado con python",
-        "artifacts": artifacts
-
-    }
+        artifacts.append(new_Artifact(i,source))
+    return new_Definition(def_id,artifacts)
 
 
 def createRelease(payload):
@@ -113,6 +116,6 @@ if __name__ == "__main__":
             
             payload = makePayload(definitions[0]['id'],artifacts)
             print(f"creando release de: {params[1]}\\{params[0]} status: ",end=" ")
-            createRelease(payload)
+            #createRelease(payload)
 
             
