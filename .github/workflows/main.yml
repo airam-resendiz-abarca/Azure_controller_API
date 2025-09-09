@@ -28,7 +28,7 @@ jobs:
 
       - name: Crear rama temporal desde commit 30e6c16055c3a971be6093b38d13c1a4d9cdc9c7
         run: |
-          git checkout  laboral-temp master
+          git checkout -b  laboral-temp master
           git rm -r --cached .github
           rm -rf .github
           git commit -m ".github workflow "
