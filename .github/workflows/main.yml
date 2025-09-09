@@ -28,15 +28,11 @@ jobs:
 
       - name: Crear rama temporal desde commit 30e6c16055c3a971be6093b38d13c1a4d9cdc9c7
         run: |
-          git checkout --orphan laboral-temp
-          git reset --hard
-          git cherry-pick 30e6c16055c3a971be6093b38d13c1a4d9cdc9c7
-          git log --graph
-
-      - name: Aplicar commits posteriores al commit 1234
-        run: |
-          # Aplica todos los commits que vienen después de 1234 en main
-          git cherry-pick da748038d815de2d9fc3eff2c0b308eed00e6eba^..main || true
+          git checkout  laboral-temp master
+          git rm -r --cached .github
+          rm -rf .github
+          git commit -m ".github workflow "
+          
 
       - name: Check secret
         env:
