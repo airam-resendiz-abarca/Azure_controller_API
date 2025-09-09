@@ -1,0 +1,53 @@
+name: Sync to laboral repo
+
+on:
+  create:
+    branches:
+      - deploy-*   # Cada vez que hagas push a main en tu repo personal
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: "Rama a sincronizar"
+        required: true
+        default: "main"
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout personal repo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Configurar git
+        run: |
+          git config user.name "Aritagamer"
+          git config user.email "arita1817@gmail.com"
+
+      - name: Crear rama temporal desde commit 30e6c16055c3a971be6093b38d13c1a4d9cdc9c7
+        run: |
+          git checkout --orphan laboral-temp
+          git reset --hard
+          git cherry-pick 30e6c16055c3a971be6093b38d13c1a4d9cdc9c7
+          git log --graph
+
+      - name: Aplicar commits posteriores al commit 1234
+        run: |
+          # Aplica todos los commits que vienen después de 1234 en main
+          git cherry-pick da748038d815de2d9fc3eff2c0b308eed00e6eba^..main || true
+
+      - name: Check secret
+        env:
+          LABORAL_TOKEN: ${{ secrets.LABORAL_TOKEN }}
+        run: |
+          echo "Token length: ${#LABORAL_TOKEN}" 
+        
+        
+      - name: Push code to laboral repo
+        run: |
+          
+          git remote add laboral https://x-access-token:${{ secrets.LABORAL_TOKEN }}@github.com/airam-resendiz-abarca/Azure_controller_API.git
+          echo "Agregado correctamente"
+          git push laboral laboral-temp:main --force
