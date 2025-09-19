@@ -54,19 +54,23 @@ def modificarRelease(id,payload):
         json=payload,)
 
     if response.status_code == 200:
-        release = response.json()
-        print("Release creado con exito")
+        return True
     else:
-        print("Algo fallo en la ejecucion")
+        print("⛔ Algo fallo en la ejecucion")
         print(response.status_code )
+        return False
 
 
 
 if __name__ == "__main__":
 
+    #path = "\\XObsoletos\\Coordinacion1\\Equipo 11"
+    path = "\\NPV\\GCP\\PROD\\C1"
+
     definitions = releases.get_allDefinitions()
-    definitions = pet.sel_custom_data("api-activaciontelefonica-spr","name",0,definitions)
-    definitions = pet.sel_custom_data("GCP\\PARTICULARES\\Team 04","path",0,definitions)
+    
+    definitions = pet.sel_custom_data(path,"path",0,definitions)
+    #definitions = pet.sel_custom_data("api-bodeguita-jersey-cd-gke-c1","name",0,definitions)
 
     f = open("new.config")
     config = json.load(f)
@@ -74,8 +78,7 @@ if __name__ == "__main__":
     for j in definitions:
 
         definition = releases.get_Definition(j["id"])
-        print(id(definition))
-        pet.makefile([definition],j["name"]+".json")
+        pet.makefile([definition],"./try/"+j["name"]+".json")
 
         for i in config:
             lista = i["path"].split(sep="/")
@@ -85,13 +88,20 @@ if __name__ == "__main__":
                     getListIndex(definition["environments"],lista[index + 1])
                     )
                 
-            print(recorrerDefinition(definition,lista,i["value"])["source"])
-        
-        pet.makefile([definition],j["name"]+"_NEW.json")
-        modificarRelease(j["id"],definition)
+            if i["op"] == "replace":
+                valor = definition["path"].replace(path,i["value"])
+            else:
+                valor = i["value"]
 
-        #pet.makefile([deep],"new.json")
+            recorrerDefinition(definition,lista,valor)
         
+        pet.makefile([definition],"./try/"+j["name"]+"_NEW.json")
+        good = False
+        
+        good = modificarRelease(j["id"],definition)
+
+        if good:
+            print(f"✅ Release {j["name"]} modificado con exito")
 
 
         

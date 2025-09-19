@@ -66,13 +66,8 @@ if __name__ == "__main__":
 
     #getReleases("api-cancelaciones","NPV\\GCP\\PARTICULARES\\Team 18","Release-1")
     data = get_allDefinitions()
-    data = pet.sel_custom_data("api-cancelaciones","name",0,data)
-    data = pet.sel_custom_data("GCP\\PARTICULARES\\Team 18","path",0,data)
+    data = pet.sel_custom_data("aaa-cap-managerauthorization-springboot-cd-gke-c2","name",0,data)
+    data = pet.sel_custom_data("GCP\\PROD\\C2","path",0,data)
 
-    definition = get_Definition(data[0]["id"])
-    pet.makefile([definition])
-
-
-
-
-    
+    definition = get_allReleaseswDef(data[0]["id"])
+    pet.makefile([definition],"./pipe_def/"+"aaa-cap-managerauthorization-springboot-cd-gke-c2.json")   

@@ -10,18 +10,23 @@ PAT = config('PERSONAL_TOKEN')
 
 
 
+
 url_base = f"https://vsrm.dev.azure.com/{ORGANIZATION}/{PROJECTS[0]}/_apis/"
 url_base2 = f"https://dev.azure.com/{ORGANIZATION}/{PROJECTS[0]}/_apis/"
 auth = HTTPBasicAuth("",PAT)
 
-def getData(path,vsrm:bool = False):
+def getData(path: str,vsrm:bool = False):
 
     url = url_base + path if vsrm else url_base2 + path
 
     response = requests.get(url,auth=auth)
-
     if response.status_code == 200:
-        data = response.json()
+        
+        if "json" in response.headers["Content-Type"]:
+            data = response.json()
+        else:
+            return response.content
+        
         if "value" in data:
             data = data["value"]
         return data
@@ -29,9 +34,9 @@ def getData(path,vsrm:bool = False):
         print("Error" , response.status_code, response.text)
         return None
     
-def makefile(data):
+def makefile(data,document = "example.json"):
     
-    with open("example.json","w",errors="replace") as file:
+    with open(document,"w",errors="replace") as file:
         for i in data:
             text = str(i).replace("'",'"') + "\n\n" 
             
@@ -48,7 +53,9 @@ def sel_custom_data(filter: str = "",area: str = "path", type: int = 0, data = [
         for i in deep:
             holder = holder[i]
 
-        value = holder
+        value:str = holder.lower()
+        filter = filter.lower()
+
         if type == 0:
 
             if filter in value:

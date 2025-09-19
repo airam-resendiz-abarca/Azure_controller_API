@@ -13,3 +13,10 @@ __pycache__/
 *.github
 
 .github
+
+definitions/
+list_pipes/
+pipe_def/
+try/
+
+*.txt
