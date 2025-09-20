@@ -10,10 +10,6 @@ __pycache__/
 
 *.list
 
-*.github
-
-.github
-
 definitions/
 list_pipes/
 pipe_def/
