@@ -2,8 +2,6 @@ import requests
 from requests.auth import HTTPBasicAuth
 from decouple import config
 
-import peticiones as pet
-
 ORGANIZATION = config('ORGANIZATION')
 PROJECTS = [p.strip() for p in config('PROJECTS').split(',')]
 PAT = config('PERSONAL_TOKEN')

@@ -1,15 +1,13 @@
 import requests
 from requests.auth import HTTPBasicAuth
 from decouple import config
-import sys
-import argparse
 
 import re
 
-import get_pipelines as pipes
-import get_releases as releases
-import get_commit as commits
-import peticiones as pet
+from modulos import get_pipelines as pipes
+from modulos import get_releases as releases
+from modulos import get_commit as commits
+from modulos import peticiones as pet
 
 ORGANIZATION = config('ORGANIZATION')
 PROJECTS = [p.strip() for p in config('PROJECTS').split(',')]
@@ -86,23 +84,22 @@ def makePayload(def_id,lista):
     return new_Definition(def_id,artifacts)
 
 
-def createRelease(payload):
+def createRelease(payload) -> str:
     pet.makefile([payload])
     response = requests.post(url_rel,json=payload,auth=auth)
 
     if response.status_code == 200:
         release = response.json()
-        print("Release creado con exito")
+        return "Release creado con exito"
     else:
-        print(f"Algo fallo en la ejecucion url: {url_rel} - {response.status_code}")
+        return f"Algo fallo en la ejecucion url: {url_rel} - {response.status_code}"
 
-if __name__ == "__main__":
-
+def crear_Release():
     with open("releases.list","r") as file:
         for line in file:
             if line in [" ","\n",""] :
                 continue
-            params = line.split("|")
+            params = line.split("\t")
             params = [p.strip() for p in params]
             artifacts = [p for p in params[2:] if p]
             
@@ -115,7 +112,13 @@ if __name__ == "__main__":
                 continue
             
             payload = makePayload(definitions[0]['id'],artifacts)
-            print(f"creando release de: {params[1]}\\{params[0]} status: ",end=" ")
-            #createRelease(payload)
+            status = "Not Deployed"
+            #status = createRelease(payload)
+            print(f"creando release de: {params[1]}\\{params[0]} status: {status}")
+            #
+
+if __name__ == "__main__":
+
+    crear_Release()
 
             

@@ -1,7 +1,7 @@
 from time import sleep
 import sys 
 
-import peticiones as pet
+from . import peticiones as pet
 
 API_VERSION = '7.0'
 
